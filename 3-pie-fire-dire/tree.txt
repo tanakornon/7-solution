@@ -1,0 +1,24 @@
+pie-fire-dire
+├───cmd
+│   ├───protocol
+│   └───root
+├───config
+├───docs
+├───generated
+│   ├───grpc
+│   │   └───beefpb
+│   └───mocks
+├───internal
+│   ├───adapter
+│   │   └───bacon
+│   ├───core
+│   │   ├───domain
+│   │   ├───port
+│   │   └───service
+│   │       └───beef
+│   └───handler
+│       ├───grpc
+│       │   └───beef
+│       └───rest
+│           └───beef
+└───proto

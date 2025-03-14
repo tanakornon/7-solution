@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package beef;
+
+option go_package = "/generated/grpc/beefpb";
+
+service BeefService {
+    rpc Get (GetRequest) returns (GetResponse);
+    rpc GetSummary (GetSummaryRequest) returns (GetSummaryResponse);
+}
+
+message GetRequest {}
+
+message GetResponse {
+    string message = 1;
+}
+
+message GetSummaryRequest {}
+
+message GetSummaryResponse {
+    map<string, int64> beef = 1;
+}
