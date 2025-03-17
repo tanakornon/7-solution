@@ -1,10 +1,10 @@
 # powershell
 
 init:
+	go install github.com/4meepo/tagalign/cmd/tagalign@latest
 	go install github.com/swaggo/swag/cmd/swag@v1.8.7
 	go install github.com/vektra/mockery/v2@latest
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
-	go install github.com/4meepo/tagalign/cmd/tagalign@latest
 
 start:
 	go run ./cmd/main.go serve

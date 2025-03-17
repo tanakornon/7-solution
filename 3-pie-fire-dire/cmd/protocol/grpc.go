@@ -7,20 +7,36 @@ import (
 	"google.golang.org/grpc"
 )
 
-func ServeGRPC() error {
+type GRPCServer struct {
+	server *grpc.Server
+	port   string
+}
+
+func NewGRPCServer() *GRPCServer {
 	var (
-		config   = app.config
-		handlers = app.handlers.grpc
+		config  = app.config
+		handler = app.handlers.grpc
 	)
 
 	server := grpc.NewServer()
+	beefpb.RegisterBeefServiceServer(server, handler.Beef)
 
-	beefpb.RegisterBeefServiceServer(server, handlers.Beef)
+	return &GRPCServer{
+		server: server,
+		port:   config.Server.GRPCPort,
+	}
+}
 
-	listener, err := net.Listen("tcp", ":"+config.Server.GRPCPort)
+func (s *GRPCServer) Start() error {
+	listener, err := net.Listen("tcp", ":"+s.port)
 	if err != nil {
 		return err
 	}
 
-	return server.Serve(listener)
+	return s.server.Serve(listener)
+}
+
+func (s *GRPCServer) Stop() error {
+	s.server.GracefulStop()
+	return nil
 }

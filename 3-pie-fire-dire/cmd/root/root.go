@@ -1,8 +1,6 @@
 package root
 
 import (
-	"log"
-	"os"
 	"pie-fire-dire/cmd/protocol"
 
 	"github.com/spf13/cobra"
@@ -17,10 +15,7 @@ func Execute() {
 		Use:   "grpc",
 		Short: "Start gRPC server",
 		Run: func(cmd *cobra.Command, args []string) {
-			if err := protocol.ServeGRPC(); err != nil {
-				log.Fatal(err)
-				os.Exit(1)
-			}
+			protocol.NewServer().WithREST().Start()
 		},
 	}
 
@@ -28,10 +23,7 @@ func Execute() {
 		Use:   "rest",
 		Short: "Start REST server",
 		Run: func(cmd *cobra.Command, args []string) {
-			if err := protocol.ServeREST(); err != nil {
-				log.Fatal(err)
-				os.Exit(1)
-			}
+			protocol.NewServer().WithGRPC().Start()
 		},
 	}
 
@@ -39,21 +31,7 @@ func Execute() {
 		Use:   "serve",
 		Short: "Start both gRPC and REST servers concurrently",
 		Run: func(cmd *cobra.Command, args []string) {
-			go func() {
-				if err := protocol.ServeGRPC(); err != nil {
-					log.Fatal(err)
-					os.Exit(1)
-				}
-			}()
-
-			go func() {
-				if err := protocol.ServeREST(); err != nil {
-					log.Fatal(err)
-					os.Exit(1)
-				}
-			}()
-
-			select {}
+			protocol.NewServer().WithGRPC().WithREST().Start()
 		},
 	}
 
